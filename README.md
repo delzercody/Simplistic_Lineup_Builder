@@ -12,10 +12,13 @@ Link to the repository:
 - As a user, I want to save my lineups for future reference.
 - As a user, I want to be able to view all of my saved lineups.
 - As a user, I want to edit and delete my saved lineups.
-- As a user, I want to be able to compare two different lineups.
+- As a user, I want to be able to compare two different lineups.(stretch goal)
 
 ## Wireframe
-Fantasy Football Lineup Builder wire frame
+<img src =images/Wireframe1.png>
+<img src =images/Wireframe2.png>
+<img src =images/Wireframe3.png>
+<img src =images/Wireframe4.png>
 
 
 ## API Routes
@@ -46,10 +49,11 @@ Fantasy Football Lineup Builder wire frame
 | /navigation          | NavigationBar      |
 
 ## React Component Tree
-Fantasy Football Lineup Builder React Tree
+<img src =images/SimpleLineupBuilderReactTree.png>
+
 
 ## Schema
-Fantasy Football Lineup Builder Schema
+<img src =images/SimpleLineupBuilderSchema.png>
 
 ## Trello
-Fantasy Football Lineup Builder Trello
+<img src =images/KanBanBoard.png>
