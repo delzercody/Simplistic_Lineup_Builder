@@ -2,6 +2,13 @@ import React from 'react';
 import './App.css';
 import HomePage from './components/HomePage';
 import PlayersPage from './components/PlayersPage';
+import Dashboard from './components/Dashboard'
+import ViewSavedLineupsPage from './components/ViewSavedLineupsPage';
+import UserProfilePage from './components/UserProfilePage';
+import NavBar from './components/NavBar';
+import EditLineupPage from './components/EditLineupPage';
+import PlayerStatsPage from './components/PlayerStatsPage';
+import BuildLineupPage from './components/BuildLineupPage';
 // Import other components here
 
 function App() {
@@ -22,6 +29,13 @@ function App() {
       </header>
       <HomePage />
       <PlayersPage />
+      <Dashboard />
+      <ViewSavedLineupsPage />
+      <UserProfilePage />
+      <NavBar />
+      <EditLineupPage />
+      <PlayerStatsPage />
+      <BuildLineupPage />
       {/* Render other components here */}
     </div>
   );
