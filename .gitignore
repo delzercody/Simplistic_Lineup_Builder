@@ -1,2 +1,7 @@
 # Secret key file
 config.py
+
+node_modules/
+
+Pipfile
+Pipfile.lock
