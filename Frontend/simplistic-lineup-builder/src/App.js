@@ -1,5 +1,8 @@
+// App.js
+
 import React from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import PlayersPage from './components/PlayersPage';
 import Dashboard from './components/Dashboard'
@@ -9,35 +12,31 @@ import NavBar from './components/NavBar';
 import EditLineupPage from './components/EditLineupPage';
 import PlayerStatsPage from './components/PlayerStatsPage';
 import BuildLineupPage from './components/BuildLineupPage';
-// Import other components here
+import LogoutButton from './components/LogoutButton';
+import { UserProvider } from './UserContext';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <HomePage />
-      <PlayersPage />
-      <Dashboard />
-      <ViewSavedLineupsPage />
-      <UserProfilePage />
-      <NavBar />
-      <EditLineupPage />
-      <PlayerStatsPage />
-      <BuildLineupPage />
-      {/* Render other components here */}
-    </div>
+    <UserProvider>
+      <div className="App">
+        {/* <header className="App-header">
+        </header> */}
+        <Router>
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<HomePage />} /> {/* Include Login/SignUp forms here */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/players" element={<PlayersPage />} />
+            <Route path="/buildlineup" element={<BuildLineupPage />} />
+            <Route path="/lineups/:id/edit" element={<EditLineupPage />} />
+            <Route path="/viewsavedlineups" element={<ViewSavedLineupsPage />} />
+            <Route path="/userprofile" element={<UserProfilePage />} />
+            <Route path="/players/:id" element={<PlayerStatsPage />} />
+          </Routes>
+          <LogoutButton />
+        </Router>
+      </div>
+    </UserProvider>
   );
 }
 

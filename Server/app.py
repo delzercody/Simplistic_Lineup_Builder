@@ -1,25 +1,29 @@
 import logging
 import sys
 from flask import Flask, request, make_response
+from flask_cors import CORS
 from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from config.config import SECRET_KEY
 from werkzeug.exceptions import NotFound, UnprocessableEntity, Unauthorized
 from flask_restful import Api, Resource, abort
 
 app = Flask(__name__)
-login_manager = LoginManager(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['DEBUG'] = True
 app.secret_key = SECRET_KEY
 
-db = SQLAlchemy(app)
-api = Api(app)
-migrate = Migrate(app, db)
+api = Api(app)  # Instantiate api before invoking CORS
 
-from models import User, Player, Lineup, LineupSlot, PlayerStats
+CORS(app)
+
+login_manager = LoginManager(app)
+
+from models import db
+db.init_app(app)
+
+migrate = Migrate(app, db)
 
 logging.basicConfig(
     level=logging.ERROR,
@@ -30,6 +34,8 @@ logging.basicConfig(
     ]
 )
 
+from models import User, Player, Lineup, LineupSlot, PlayerStats
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
@@ -39,6 +45,7 @@ def hello():
     return 'Hello Flask!'
 
 ############# Login/Signup ################
+from models import bcrypt
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -53,7 +60,7 @@ def login():
     if not user:
         user = User.query.filter_by(email=usernameOrEmail).first()
 
-    if user and bcrypt.check_password_hash(user.password_hash, password):
+    if user and bcrypt.check_password_hash(user._password_hash, password):
         login_user(user)
         return make_response(user.to_dict(), 200)
     else:
@@ -75,7 +82,7 @@ def signup():
         last_name=rq['last_name'],
         avatar=rq['avatar'],
         username=rq['username'],
-        password_hash=bcrypt.generate_password_hash(rq['password']).decode('utf-8')
+        password=rq['password']
     )
     db.session.add(user)
     db.session.commit()
@@ -104,7 +111,7 @@ class Users(Resource):
             last_name=rq['last_name'],
             avatar=rq['avatar'],
             username=rq['username'],
-            password_hash=rq['password']
+            password=rq['password'] 
         )
         db.session.add(new_user)
         db.session.commit()

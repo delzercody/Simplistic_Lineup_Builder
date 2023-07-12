@@ -5,11 +5,12 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
 from flask_login import UserMixin
-from app import db
 from flask_bcrypt import Bcrypt
 import re
 
 bcrypt = Bcrypt()
+
+db = SQLAlchemy()
 
 class User(db.Model, SerializerMixin, UserMixin):
     __tablename__ = 'users'
@@ -79,12 +80,12 @@ class User(db.Model, SerializerMixin, UserMixin):
             raise ValueError( "Password must be a string between 8 - 128 characters.")
 
     ########### Password hashing #################
-    @hybrid_property
-    def password_hash(self):
-        raise AttributeError("Password hashes may not be viewed")
+    @property
+    def password(self):
+        raise AttributeError('password: write-only field')
 
-    @password_hash.setter
-    def password_hash(self, password):
+    @password.setter
+    def password(self, password):
         password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
 

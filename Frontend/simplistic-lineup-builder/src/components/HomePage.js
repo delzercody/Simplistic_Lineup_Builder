@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LoginForm from './LoginForm'
 import SignupForm from './SignupForm';
 
 function HomePage() {
+    const [isLogin, setIsLogin] = useState(true);
+
+    const switchForm = () => setIsLogin(!isLogin);
+
     return (
         <div>
-            <h1>Home Page</h1>
-            <LoginForm />
-            <SignupForm />
-
+            {isLogin ? <LoginForm /> : <SignupForm />}
+            <button onClick={switchForm}>
+                Switch to {isLogin ? 'Signup' : 'Login'}
+            </button>
         </div>
     );
 }
