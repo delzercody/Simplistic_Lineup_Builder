@@ -1,19 +1,31 @@
 // NavBar.js
 
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import UserContext from '../UserContext';
 
 function NavBar() {
+    const { user } = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const handleHomeClick = () => {
+        if (user) {
+            navigate('/dashboard');
+        } else {
+            navigate('/');
+        }
+    };
+
     return (
         <nav>
-            <Link to="/">Home</Link>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/players">Players</Link>
-            <Link to="/buildlineup">Build Lineup</Link>
-            <Link to="/viewsavedlineups">View Saved Lineups</Link>
-            <Link to="/userprofile">User Profile</Link>
+            <button onClick={handleHomeClick}>Home</button>
+            <button onClick={() => navigate('/dashboard')}>Dashboard</button>
+            <button onClick={() => navigate('/players')}>Players</button>
+            <button onClick={() => navigate('/buildlineup')}>Build Lineup</button>
+            <button onClick={() => navigate('/viewsavedlineups')}>View Saved Lineups</button>
+            <button onClick={() => navigate('/userprofile')}>User Profile</button>
         </nav>
     );
 }
 
-export default NavBar;
+export default NavBar

@@ -1,13 +1,20 @@
 // PlayerCard.js
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function PlayerCard() {
+const PlayerCard = ({ player }) => {
     return (
-        <div>
-            <h1>Player Card Page</h1>
-        </div>
-    );
-}
+        <tr>
+        <td>{player.position}</td>
+        <td><Link to={`/players/${player.id}`}>{player.name}</Link></td>
+        <td>{player.team}</td>
+        <td>{player.salary}</td>
+        <td>{player.projected_points}</td>
+        <td>{player.ownership_percentage}</td>
+        <td>{player.team_game}</td>
+        </tr>
+        );
+    };
 
-export default PlayerCard;
+export default PlayerCard

@@ -1,17 +1,18 @@
 // Dashboard.js
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
+    const navigate = useNavigate()
     return (
         <div>
             <h1>Dashboard Page</h1>
 
             <div className="dashboard-links">
-                <Link to="/build-lineup">Build a Lineup</Link>
-                <Link to="/saved-lineups">View Saved Lineups</Link>
-                <Link to="/user-profile">View User Profile</Link>
-                <Link to="/all-players">View All Players</Link>
+            <button onClick={() => navigate('/buildlineup')}>Build a Lineup</button>
+            <button onClick={() => navigate('/viewsavedlineups')}>View Saved Lineups</button>
+            <button onClick={() => navigate('/userprofile')}>View User Profile</button>
+            <button onClick={() => navigate('/players')}>View All Players</button>
             </div>
         </div>
     );

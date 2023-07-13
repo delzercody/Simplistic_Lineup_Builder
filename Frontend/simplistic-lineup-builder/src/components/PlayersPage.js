@@ -2,16 +2,15 @@
 
 import React from 'react';
 import PlayerList from './PlayerList';
-import PlayerFilter from './PlayerFilter';
 
-function PlayersPage() {
+const PlayersPage = () => {
     return (
         <div>
-            <h1>Players Page</h1>
-            <PlayerFilter />
+            <h1>All Players</h1>
             <PlayerList />
+            {/* Add PlayerFilter component here when it's ready */}
         </div>
-    );
-}
+);
+};
 
-export default PlayersPage;
+export default PlayersPage
