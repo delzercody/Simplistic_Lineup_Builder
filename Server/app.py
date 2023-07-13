@@ -172,18 +172,23 @@ class LineupResource(Resource):
         rq = request.get_json()
         user_id = rq['user_id']
         name = rq['name']
-        player_ids = rq['player_ids']
+        lineup_slots = rq['lineup_slots']
 
         # Fetch the user
         user = User.query.get(user_id)
         if not user:
             abort(404, "User not found")
 
-        # Fetch the players
-        players = Player.query.filter(Player.id.in_(player_ids)).all()
+        # Fetch the players and validate the lineup
+        total_salary = 0
+        players = []
+        for slot in lineup_slots:
+            player = Player.query.get(slot['player_id'])
+            if not player:
+                abort(404, f"Player with id {slot['player_id']} not found")
 
-        # Calculate the total salary
-        total_salary = sum(player.salary for player in players)
+            players.append((player, slot['role']))
+            total_salary += player.salary
 
         # Check the salary constraint
         if total_salary > 50000:
@@ -193,27 +198,13 @@ class LineupResource(Resource):
         if len(players) != 8:
             abort(422, "Lineup must have 8 players")
 
-        # Validate the positions
-        positions = [player.position for player in players]
-        position_counts = {
-            'QB': 0,
-            'RB': 0,
-            'WR': 0,
-            'TE': 0,
-            'DEF': 0
-        }
-        for position in positions:
-            if position in position_counts:
-                position_counts[position] += 1
+        # # Check player roles and lineup slots
+        # lineup_slots_dict = {'QB': 1, 'RB': 2, 'WR': 3, 'TE': 1, 'DEF': 1}
+        # for player, slot in players:
+        #     if player.position != slot[:2] or lineup_slots_dict.get(slot, 0) <= 0:
+        #         abort(422, "Invalid player role or lineup slot")
 
-        if (
-            position_counts['QB'] != 1 or
-            position_counts['RB'] != 2 or
-            position_counts['WR'] != 3 or
-            position_counts['TE'] != 1 or
-            position_counts['DEF'] != 1
-        ):
-            abort(422, "Invalid player positions in the lineup")
+        #     lineup_slots_dict[slot] -= 1
 
         # Create the lineup
         new_lineup = Lineup(user=user, name=name)
@@ -221,9 +212,9 @@ class LineupResource(Resource):
         db.session.commit()
 
         # Create the lineup slots and associate players
-        for player in players:
-            slot = LineupSlot(lineup=new_lineup, player=player)
-            db.session.add(slot)
+        for player, slot in players:
+            lineup_slot = LineupSlot(lineup=new_lineup, player=player, role=slot)
+            db.session.add(lineup_slot)
 
         db.session.commit()
         return make_response(new_lineup.to_dict(), 201)
@@ -231,7 +222,16 @@ class LineupResource(Resource):
     def get(self, lineup_id):
         lineup = Lineup.query.get(lineup_id)
         if lineup:
-            return make_response(lineup.to_dict(), 200)
+            # Include the player's role (position) in the lineup along with their details.
+            lineup_dict = lineup.to_dict()
+            lineup_dict['lineup_players'] = [
+                {
+                    'player': slot.player.to_dict(),
+                    'role': slot.role
+                }
+                for slot in lineup.lineup_slots
+            ]
+            return make_response(lineup_dict, 200)
         else:
             abort(404, "Lineup not found")
 
@@ -242,36 +242,66 @@ class LineupResource(Resource):
         
         rq = request.get_json()
         lineup.name = rq['name']
-        
-        # Perform position validation
-        positions = {'QB': 1, 'RB': 2, 'WR': 3, 'TE': 1, 'DEF': 1}
-        lineup_positions = {}
 
-        for slot in rq['lineup_slots']:
-            player = Player.query.get(slot['player_id'])
-            position = player.position
-
-            if position in lineup_positions:
-                lineup_positions[position] += 1
-            else:
-                lineup_positions[position] = 1
-
-        for position, count in positions.items():
-            if lineup_positions.get(position, 0) != count:
-                abort(422, f"Invalid lineup: Expected {count} {position}(s)")
-
-        # Perform salary validation
+        # Update the players for each slot
         total_salary = 0
-
-        for slot in rq['lineup_slots']:
-            player = Player.query.get(slot['player_id'])
+        for slot_data in rq['lineup_players']:
+            player = Player.query.get(slot_data['player_id'])
+            if not player:
+                abort(422, f"Player with id {slot_data['player_id']} not found")
+                
             total_salary += player.salary
+            
+            slot = LineupSlot.query.filter_by(lineup_id=lineup.id, role=slot_data['role']).first()
+            if not slot:
+                abort(422, "Invalid slot")
+            slot.player_id = player.id
 
+        # Check the salary constraint
         if total_salary > 50000:
             abort(422, "Invalid lineup: Salary exceeds $50,000")
 
         db.session.commit()
         return make_response(lineup.to_dict(), 200)
+
+    def delete(self, lineup_id):
+        lineup = Lineup.query.get(lineup_id)
+        if lineup:
+            db.session.delete(lineup)
+            db.session.commit()
+            return make_response('', 204)
+        else:
+            abort(404, "Lineup not found")
+        
+        # # Perform position validation and update the players and their positions
+        # lineup_positions = {}
+        # for slot_data in rq['lineup_players']:
+        #     player = Player.query.get(slot_data['player_id'])
+        #     position = player.position
+        #     slot = LineupSlot.query.filter_by(lineup_id=lineup.id, role=slot_data['role']).first()
+        #     if not slot:
+        #         abort(422, "Invalid slot")
+        #     slot.player_id = player.id
+
+        #     if position in lineup_positions:
+        #         lineup_positions[position] += 1
+        #     else:
+        #         lineup_positions[position] = 1
+
+        # for position, count in positions.items():
+        #     if lineup_positions.get(position, 0) != count:
+        #         abort(422, f"Invalid lineup: Expected {count} {position}(s)")
+
+        # # Perform salary validation
+        # total_salary = 0
+        # for slot in lineup.lineup_slots:
+        #     total_salary += slot.player.salary
+
+        # if total_salary > 50000:
+        #     abort(422, "Invalid lineup: Salary exceeds $50,000")
+
+        # db.session.commit()
+        # return make_response(lineup.to_dict(), 200)
 
     def delete(self, lineup_id):
         lineup = Lineup.query.get(lineup_id)

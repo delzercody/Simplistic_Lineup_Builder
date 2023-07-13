@@ -34,13 +34,13 @@ class User(db.Model, SerializerMixin, UserMixin):
 
     #######################USER VALIDATIONS########################
     #Email is unique and valid
-    @validates('email')
-    def validate_email(self, key, email):
-        em = User.query.filter(User.email.like(f'%{email}%')).first()
-        if type(email) is str and email and em is None and "@" in email and ".com" in email:
-            return email
-        else: 
-            raise ValueError( 'Must be a valid email or email has already been registered.')
+    # @validates('email')
+    # def validate_email(self, key, email):
+    #     em = User.query.filter(User.email.like(f'%{email}%')).first()
+    #     if type(email) is str and email and em is None and "@" in email and ".com" in email:
+    #         return email
+    #     else: 
+    #         raise ValueError( 'Must be a valid email or email has already been registered.')
 
     @validates('first_name')
     def validate_first_name(self, key, first_name):
@@ -56,13 +56,13 @@ class User(db.Model, SerializerMixin, UserMixin):
         else: 
             raise ValueError( "First and last name must be a string between 1 - 50 characters.")
 
-    @validates('username')
-    def validate_username(self, key, username):
-        un = User.query.filter(User.username.like(f'%{username}%')).first()
-        if type(username) is str and username and un == None and len(username) in range(5, 16) and re.match(r'^[A-Za-z0-9_]+$', username):
-            return username
-        else: 
-            raise ValueError('Username must be unique string between 5 - 15 characters and not contain any special characters.')
+    # @validates('username')
+    # def validate_username(self, key, username):
+    #     un = User.query.filter(User.username.like(f'%{username}%')).first()
+    #     if type(username) is str and username and un == None and len(username) in range(5, 16) and re.match(r'^[A-Za-z0-9_]+$', username):
+    #         return username
+    #     else: 
+    #         raise ValueError('Username must be unique string between 5 - 15 characters and not contain any special characters.')
 
     @validates('avatar')
     def validate_avatar(self, key, avatar):
@@ -238,14 +238,13 @@ class LineupSlot(db.Model, SerializerMixin):
     
     serialize_rules = ('-lineup.lineup_slots', '-player.lineup_slots')
 
-####################### LINEUPSLOT VALIDATIONS ########################
     @validates('lineup_id')
     def validate_lineup_id(self, key, lineup_id):
         lineup = Lineup.find( lineup_id )        
         if lineup:
             return lineup_id
         else: 
-            raise ValueError( "User not found. ")
+            raise ValueError( "Lineup not found. ")
 
     @validates('player_id')
     def validate_player_id(self, key, player_id):
@@ -257,32 +256,31 @@ class LineupSlot(db.Model, SerializerMixin):
 
     @validates('role')
     def validate_role(self, key, role):
-        valid_roles = ['QB', 'RB', 'WR', 'TE', 'DEF']
+        valid_roles = ['QB', 'RB1', 'RB2', 'WR1', 'WR2', 'WR3', 'TE', 'DEF'] 
         if role not in valid_roles:
-            raise ValueError(f"Invalid position: {role}. Must be one of {valid_roles}.")
+            raise ValueError(f"Invalid slot: {role}. Must be one of {valid_roles}.")
         return role
 
-    @staticmethod
-    def _update_lineup_with_player_info(target, value, oldvalue, initiator):
-        lineup = target.lineup
-        player = target.player
+    # @staticmethod
+    # def _update_lineup_with_player_info(target, value, oldvalue, initiator):
+    #     lineup = target.lineup
+    #     player = target.player
 
-        lineup_slot_info = {
-            'player_id': player.id,
-            'name': player.name,
-            'position': player.position,
-            'team': player.team,
-            'salary': player.salary,
-            'projected_points': player.projected_points,
-            'ownership_percentage': player.ownership_percentage
-        }
+    #     lineup_slot_info = {
+    #         'player_id': player.id,
+    #         'name': player.name,
+    #         'position': player.position,
+    #         'team': player.team,
+    #         'salary': player.salary,
+    #         'projected_points': player.projected_points,
+    #         'ownership_percentage': player.ownership_percentage
+    #     }
 
-        lineup.players.append(lineup_slot_info)
+    #     lineup.players.append(lineup_slot_info)
     
     def __init__(self, lineup=None, player=None, role=None):
         self.lineup = lineup
         self.player = player
         self.role = role
 
-# Register the event listener for the LineupSlot model
-event.listen(LineupSlot, 'after_insert', LineupSlot._update_lineup_with_player_info)
+# event.listen(LineupSlot, 'after_insert', LineupSlot._update_lineup_with_player_info)

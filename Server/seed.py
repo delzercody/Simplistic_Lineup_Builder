@@ -38,8 +38,8 @@ def seed_data():
         first_name='Cody',
         last_name='Delzer',
         avatar='https://example.com/avatar1.jpg',
-        username='DelzerDFS')
-    user1.password_hash='password1'
+        username='DelzerDFS',
+        password='password')
 
     # user2 = User(
     #     email='user2@example.com',
@@ -1194,50 +1194,21 @@ def seed_data():
 
     # Create the saved lineup and assign the players
     lineup = Lineup(
-        user=user1,
-        name='My Lineup')
-
-    lineup_slot_qb = LineupSlot(
-        lineup=lineup,
-        player=qb1,
-        role='QB')
-
-    lineup_slot_rb1 = LineupSlot(
-        lineup=lineup,
-        player=rb1,
-        role='RB')
-
-    lineup_slot_rb2 = LineupSlot(
-        lineup=lineup,
-        player=rb2,
-        role='RB')
-
-    lineup_slot_wr1 = LineupSlot(
-        lineup=lineup,
-        player=wr1,
-        role='WR')
-
-    lineup_slot_wr2 = LineupSlot(
-        lineup=lineup,
-        player=wr2,
-        role='WR')
-
-    lineup_slot_wr3 = LineupSlot(
-        lineup=lineup,
-        player=wr3,
-        role='WR')
-
-    lineup_slot_te1 = LineupSlot(
-        lineup=lineup,
-        player=te1,
-        role='TE')
-
-    lineup_slot_def1 = LineupSlot(
-        lineup=lineup,
-        player=def1,
-        role='DEF')
+    user=user1,
+    name='My Lineup',
+    lineup_slots=[
+        LineupSlot(player=qb1, role='QB'),
+        LineupSlot(player=rb1, role='RB1'),
+        LineupSlot(player=rb2, role='RB2'),
+        LineupSlot(player=wr1, role='WR1'),
+        LineupSlot(player=wr2, role='WR2'),
+        LineupSlot(player=wr3, role='WR3'),
+        LineupSlot(player=te1, role='TE'),
+        LineupSlot(player=def1, role='DEF')
+    ]
+)
     # Save the lineup to the session
-    db.session.add_all([lineup, lineup_slot_qb, lineup_slot_rb1, lineup_slot_rb2, lineup_slot_wr1, lineup_slot_wr2, lineup_slot_wr3, lineup_slot_te1, lineup_slot_def1])
+    db.session.add(lineup)
     # Add the users to the session
     db.session.add(user1)
     # db.session.add_all([user1, user2, user3, user4, user5])
