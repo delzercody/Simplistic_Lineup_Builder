@@ -4,6 +4,8 @@ import LineupBuilder from './LineupBuilder';
 
 function BuildLineupPage() {
     const [players, setPlayers] = useState([]);
+    const [totalSalary, setTotalSalary] = useState(0);
+    const [lineupName, setLineupName] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:5555/api/players')
@@ -14,7 +16,7 @@ function BuildLineupPage() {
     return (
         <div>
             <h1>Build a new Lineup Page</h1>
-            <LineupBuilder players={players} />
+            <LineupBuilder players={players} totalSalary={totalSalary} setTotalSalary={setTotalSalary} lineupName={lineupName} setLineupName={setLineupName} />
         </div>
     );
 }

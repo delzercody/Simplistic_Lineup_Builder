@@ -13,6 +13,7 @@ import EditLineupPage from './components/EditLineupPage';
 import PlayerStatsPage from './components/PlayerStatsPage';
 import BuildLineupPage from './components/BuildLineupPage';
 import LogoutButton from './components/LogoutButton';
+
 import { UserProvider } from './UserContext';
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/players" element={<PlayersPage />} />
             <Route path="/buildlineup" element={<BuildLineupPage />} />
-            <Route path="/lineups/:id/edit" element={<EditLineupPage />} />
+            <Route path="/lineups/edit/:id" element={<EditLineupPage />} />
             <Route path="/viewsavedlineups" element={<ViewSavedLineupsPage />} />
             <Route path="/userprofile" element={<UserProfilePage />} />
             <Route path="/players/:id" element={<PlayerStatsPage />} />

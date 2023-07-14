@@ -1,15 +1,19 @@
 // SavedLineupList.js
-
 import React from 'react';
 import SavedLineupCard from './SavedLineupCard';
 
-function SavedLineupList() {
+function SavedLineupList({ lineups = [] }) {
+    if (!Array.isArray(lineups)) {
+        return <div>Loading lineups...</div>;
+    }
     return (
         <div>
-            <h1>This should hold all the individual saved lineups as individual cards in a list to display on the view saved lineups Page</h1>
-            <SavedLineupCard />
+            <h1>Your Saved Lineups</h1>
+            {lineups.map(lineup =>
+                <SavedLineupCard key={lineup.id} lineup={lineup} />
+            )}
         </div>
     );
 }
 
-export default SavedLineupList;
+export default SavedLineupList

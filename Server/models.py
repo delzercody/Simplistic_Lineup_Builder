@@ -215,7 +215,7 @@ class Lineup(db.Model, SerializerMixin):
                 raise ValueError("Lineup name cannot be empty.")
 
             # Check if the name already exists for the same user's lineups
-            existing_lineup = Lineup.query.filter(Lineup.name == name, Lineup.user_id == self.user_id).first()
+            existing_lineup = Lineup.query.filter(Lineup.name == name, Lineup.user_id == self.user_id, Lineup.id != self.id).first()
             if existing_lineup:
                 raise ValueError("Lineup name already exists.")
 

@@ -1,12 +1,13 @@
 //LineupBuilder.js
 
 import React, { useState, useContext } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../UserContext';
 
-const LineupBuilder = ({ players }) => {
+const LineupBuilder = ({ players, initialLineupProp, totalSalary, setTotalSalary, lineupName, setLineupName, isEditMode = false /*default to false */, initialLineupId }) => {
+    const navigate = useNavigate()
     const { user } = useContext(UserContext)
-    const initialLineup = {
+    const initialLineup = initialLineupProp || {
         QB: null,
         RB1: null,
         RB2: null,
@@ -15,11 +16,9 @@ const LineupBuilder = ({ players }) => {
         WR3: null,
         TE: null,
         DEF: null
-    };
+    }
 
     const [lineup, setLineup] = useState(initialLineup)
-    const [lineupName, setLineupName] = useState('')
-    const [totalSalary, setTotalSalary] = useState(0)
     const [feedback, setFeedback] = useState('')
 
     const addPlayerToLineup = (player) => {
@@ -61,6 +60,9 @@ const LineupBuilder = ({ players }) => {
     }
 
     const handleSaveLineup = () => {
+        console.log("lineupName:", lineupName);
+        console.log("user.id:", user.id);
+        console.log("lineup:", lineup)
         // Check if lineup has required number of players
         if (Object.values(lineup).some(player => player === null)) {
             setFeedback('Lineup must contain exactly 1 QB, 2 RBs, 3 WRs, 1 TE, and 1 DEF.');
@@ -72,29 +74,42 @@ const LineupBuilder = ({ players }) => {
             name: lineupName,
             user_id: user.id, // Get userId from user context
             lineup_slots: Object.entries(lineup).map(([role, player]) => ({player_id: player.id, role})) // Change here
-        }
+    }
         console.log("Lineup data to be sent:", lineupData)
     
-        fetch('http://localhost:5555/api/lineups/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(lineupData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
+        // Use POST for create, PUT for update
+    const method = isEditMode ? 'PUT' : 'POST';
+    const url = isEditMode ? `http://localhost:5555/api/lineups/${initialLineupId}` : 'http://localhost:5555/api/lineups/';
+
+    fetch(url, {
+        method,
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(lineupData)
+    })
+    .then(response => {
+        console.log("Fetch response:", response);
+        return response.json();
+    })
+    .then(data => {
+            console.log("Data after fetch:", data)
             setLineup(initialLineup)
             setLineupName('')
             setTotalSalary(0)
             setFeedback('Lineup saved successfully')
+
+            // If in edit mode, navigate back to view saved lineups page
+            if (isEditMode) {
+                navigate('/viewsavedlineups');
+            }
         })
         .catch(error => {
-            console.log(error)
+            console.log("Fetch error:", error)
             setFeedback(`Failed to save lineup: ${error}`);
         });
     }
+
+    // Change button text based on mode
+        const buttonText = isEditMode ? 'Update Lineup' : 'Save Lineup'
 
         return (
             <div>
@@ -115,7 +130,7 @@ const LineupBuilder = ({ players }) => {
                             <th>Projected Points</th>
                             <th>Ownership Percentage</th>
                             <th>Next Game</th>
-                            <th></th>
+                            <th>Remove From Lineup</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,7 +155,7 @@ const LineupBuilder = ({ players }) => {
                     </tbody>
                 </table>
                 <p>Total Salary: {totalSalary}</p>
-                <button onClick={handleSaveLineup}>Save Lineup</button>
+                <button onClick={handleSaveLineup}>{buttonText}</button>
             <table>
                 <thead>
                     <tr>
@@ -151,7 +166,7 @@ const LineupBuilder = ({ players }) => {
                         <th>Projected Points</th>
                         <th>Ownership Percentage</th>
                         <th>Next Game</th>
-                        <th></th> {/* Empty header for the button column */}
+                        <th>Add to Lineup</th> {/* Empty header for the button column */}
                     </tr>
                 </thead>
                 <tbody>

@@ -245,7 +245,7 @@ class LineupResource(Resource):
 
         # Update the players for each slot
         total_salary = 0
-        for slot_data in rq['lineup_players']:
+        for slot_data in rq['lineup_slots']:
             player = Player.query.get(slot_data['player_id'])
             if not player:
                 abort(422, f"Player with id {slot_data['player_id']} not found")
@@ -302,15 +302,6 @@ class LineupResource(Resource):
 
         # db.session.commit()
         # return make_response(lineup.to_dict(), 200)
-
-    def delete(self, lineup_id):
-        lineup = Lineup.query.get(lineup_id)
-        if lineup:
-            db.session.delete(lineup)
-            db.session.commit()
-            return make_response('', 204)
-        else:
-            abort(404, "Lineup not found")
 
 
 class UserLineups(Resource):
