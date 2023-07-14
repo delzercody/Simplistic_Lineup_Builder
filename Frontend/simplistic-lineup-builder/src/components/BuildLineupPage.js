@@ -5,6 +5,8 @@ import LineupBuilder from './LineupBuilder';
 function BuildLineupPage() {
     const [players, setPlayers] = useState([]);
     const [totalSalary, setTotalSalary] = useState(0);
+    const [totalPoints, setTotalPoints] = useState(0);
+    const [totalOwnership, setTotalOwnership] = useState(0)
     const [lineupName, setLineupName] = useState('');
 
     useEffect(() => {
@@ -16,7 +18,17 @@ function BuildLineupPage() {
     return (
         <div>
             <h1>Build a new Lineup Page</h1>
-            <LineupBuilder players={players} totalSalary={totalSalary} setTotalSalary={setTotalSalary} lineupName={lineupName} setLineupName={setLineupName} />
+            <LineupBuilder 
+                players={players} 
+                totalSalary={totalSalary} 
+                setTotalSalary={setTotalSalary} 
+                totalPoints={totalPoints} 
+                setTotalPoints={setTotalPoints} 
+                totalOwnership={totalOwnership} 
+                setTotalOwnership={setTotalOwnership} 
+                lineupName={lineupName} 
+                setLineupName={setLineupName} 
+            />
         </div>
     );
 }

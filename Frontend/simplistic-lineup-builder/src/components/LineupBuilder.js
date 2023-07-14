@@ -4,7 +4,21 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../UserContext';
 
-const LineupBuilder = ({ players, initialLineupProp, totalSalary, setTotalSalary, lineupName, setLineupName, isEditMode = false /*default to false */, initialLineupId }) => {
+const LineupBuilder = ({ 
+    players, 
+    initialLineupProp, 
+    totalSalary, 
+    setTotalSalary, 
+    totalPoints, 
+    setTotalPoints, 
+    totalOwnership, 
+    setTotalOwnership, 
+    lineupName, 
+    setLineupName, 
+    isEditMode = false /*default to false */, 
+    initialLineupId 
+    }) => {
+
     const navigate = useNavigate()
     const { user } = useContext(UserContext)
     const initialLineup = initialLineupProp || {
@@ -39,16 +53,25 @@ const LineupBuilder = ({ players, initialLineupProp, totalSalary, setTotalSalary
             });
             console.log("Slot found:", slot)
 
-        if (slot) {
-            setLineup(prevLineup => ({
-                ...prevLineup,
-                [slot[0]]: player
-            }));
-            setTotalSalary(prevSalary => prevSalary + player.salary);
-        } else {
-            alert(`You can't add more than the allowed number of players for position ${player.position}`);
-        }
-    };
+            if (slot) {
+                setLineup(prevLineup => ({
+                    ...prevLineup,
+                    [slot[0]]: player
+                }));
+                setTotalSalary(prevSalary => prevSalary + player.salary);
+                setTotalPoints(prevPoints => {
+                    const newPoints = prevPoints + player.projected_points;
+                    return Number(newPoints.toFixed(1));
+                });
+                setTotalOwnership(prevOwnership => {
+                    const newOwnership = prevOwnership + player.ownership_percentage;
+                    return Number(newOwnership.toFixed(1));
+                })
+            } else {
+                alert(`You can't add more than the allowed number of players for position ${player.position}`);
+            }
+        };
+        
 
     const removePlayerFromLineup = (position) => {
         const player = lineup[position];
@@ -57,6 +80,14 @@ const LineupBuilder = ({ players, initialLineupProp, totalSalary, setTotalSalary
             [position]: null
         }));
         setTotalSalary(prevSalary => prevSalary - player.salary);
+        setTotalPoints(prevPoints => {
+            const newPoints = prevPoints - player.projected_points;
+            return Math.abs(newPoints) < 0.00001 ? 0 : Number(newPoints.toFixed(1));
+        });
+        setTotalOwnership(prevPercentage => {
+            const newPercentage = prevPercentage - player.ownership_percentage;
+            return Math.abs(newPercentage) < 0.00001 ? 0 : Number(newPercentage.toFixed(1));
+        })
     }
 
     const handleSaveLineup = () => {
@@ -155,6 +186,8 @@ const LineupBuilder = ({ players, initialLineupProp, totalSalary, setTotalSalary
                     </tbody>
                 </table>
                 <p>Total Salary: {totalSalary}</p>
+                <p>Total Projected Points: {totalPoints}</p>
+                <p>Total Ownership Percentage: {totalOwnership}%</p>
                 <button onClick={handleSaveLineup}>{buttonText}</button>
             <table>
                 <thead>

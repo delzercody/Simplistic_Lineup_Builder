@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useContext } from 'react';
 import UserContext from '../UserContext';
+import ViewSavedLineupsPage from './ViewSavedLineupsPage'
 
 function UserProfilePage() {
     const { user } = useContext(UserContext);
@@ -34,7 +35,11 @@ function UserProfilePage() {
         <div>
             <h1>{userData.username}'s Profile</h1>
             <p>{userData.bio}</p>
+            <img src={userData.avatar} alt="user avatar" /> {/* Display user's avatar here */}
             {/* display other user info here */}
+            <div>
+                <ViewSavedLineupsPage /> {/* Display saved lineups here */}
+            </div>
         </div>
     );
 }

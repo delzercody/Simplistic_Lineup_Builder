@@ -7,6 +7,8 @@ function EditLineupPage() {
     const [players, setPlayers] = useState([]);
     const [lineup, setLineup] = useState(null);
     const [totalSalary, setTotalSalary] = useState(0);
+    const [totalPoints, setTotalPoints] = useState(0);
+    const [totalOwnership, setTotalOwnership] = useState(0);
     const [lineupName, setLineupName] = useState('');
     const { id } = useParams();
 
@@ -23,6 +25,8 @@ function EditLineupPage() {
                 }, {});
                 setLineup(initialLineup);
                 setTotalSalary(data.lineup_slots.reduce((total, slot) => total + slot.player.salary, 0));
+                setTotalPoints(data.lineup_slots.reduce((total, slot) => total + slot.player.projected_points, 0));
+                setTotalOwnership(data.lineup_slots.reduce((total, slot) => total + slot.player.ownership_percentage, 0))
                 setLineupName(data.name);
             });
     }, [id]);
@@ -32,7 +36,20 @@ function EditLineupPage() {
     return (
         <div>
             <h1>Edit Lineup Page</h1>
-            <LineupBuilder players={players} initialLineupProp={lineup} totalSalary={totalSalary} setTotalSalary={setTotalSalary} lineupName={lineupName} setLineupName={setLineupName} isEditMode={true} initialLineupId={id}/>
+            <LineupBuilder 
+                players={players} 
+                initialLineupProp={lineup} 
+                totalSalary={totalSalary} 
+                setTotalSalary={setTotalSalary} 
+                totalPoints={totalPoints} 
+                setTotalPoints={setTotalPoints} 
+                totalOwnership={totalOwnership} 
+                setTotalOwnership={setTotalOwnership} 
+                lineupName={lineupName} 
+                setLineupName={setLineupName} 
+                isEditMode={true} 
+                initialLineupId={id}
+            />
         </div>
     );
 }

@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import UserContext from '../UserContext';
+import { useNavigate } from 'react-router-dom'
 
 function LogoutButton() {
+    const navigate = useNavigate()
     const { logoutUser } = useContext(UserContext);
 
     const handleLogout = async () => {
@@ -13,6 +15,7 @@ function LogoutButton() {
         }
 
         logoutUser();
+        navigate('/')
     } catch (error) {
         console.error('Error:', error);
     }
