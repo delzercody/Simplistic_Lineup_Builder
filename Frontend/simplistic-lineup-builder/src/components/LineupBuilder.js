@@ -29,8 +29,9 @@ const LineupBuilder = ({
         WR2: null,
         WR3: null,
         TE: null,
+        FLEX: null,
         DEF: null
-    }
+        }
 
     const [lineup, setLineup] = useState(initialLineup)
     const [feedback, setFeedback] = useState('')
@@ -48,6 +49,7 @@ const LineupBuilder = ({
             if (pos.startsWith('RB') && player.position === 'RB') return !pl;
             if (pos.startsWith('WR') && player.position === 'WR') return !pl;
             if (pos === 'TE' && player.position === 'TE') return !pl;
+            if (pos === 'FLEX' && (player.position === 'RB' || player.position === 'WR' || player.position === 'TE')) return !pl;
             if (pos === 'DEF' && player.position === 'DEF') return !pl;
             return false;
             });
@@ -72,6 +74,68 @@ const LineupBuilder = ({
             }
         };
         
+
+    // // Event handler for lineup optimization
+    // const handleOptimizeLineup = async () => {
+    //     const remainingSalaryCap = 50000 - totalSalary;
+
+    //     const lineup_slots = {
+    //         'QB': lineup.QB ? null : 'QB',
+    //         'RB1': lineup.RB1 ? null : 'RB',
+    //         'RB2': lineup.RB2 ? null : 'RB',
+    //         'WR1': lineup.WR1 ? null : 'WR',
+    //         'WR2': lineup.WR2 ? null : 'WR',
+    //         'WR3': lineup.WR3 ? null : 'WR',
+    //         'TE': lineup.TE ? null : 'TE',
+    //         'FLEX': lineup.FLEX ? null : 'FLEX',
+    //         'DEF': lineup.DEF ? null : 'DEF',
+    //     }
+
+    //     // Filter out the slots that have already been filled
+    //     const empty_slots = Object.entries(lineup_slots).filter(([slot, position]) => position != null);
+
+    //     // Generate the new lineup_slots dictionary
+    //     const new_lineup_slots = Object.fromEntries(empty_slots);
+
+    //     // Convert new_lineup_slots into a form suitable for Python code
+    //     const positionsNeeded = {};
+    //     Object.values(new_lineup_slots).forEach((pos) => {
+    //         if (positionsNeeded.hasOwnProperty(pos)) {
+    //             positionsNeeded[pos]++;
+    //         } else {
+    //             positionsNeeded[pos] = 1;
+    //         }
+    //     });
+
+    //     const availablePlayerNames = players
+    //         .filter(player => Object.values(new_lineup_slots).includes(player.position) && player.salary <= remainingSalaryCap)
+    //         .map(player => player.name);
+
+    //     // Send request to the back-end optimizer
+    //     const response = await fetch('http://localhost:5555/api/optimize', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({ 
+    //             availablePlayers: availablePlayerNames, 
+    //             lineupRequirements: {
+    //                 positionsNeeded, 
+    //                 remainingCap: remainingSalaryCap
+    //             }
+    //         }),
+    //     });
+
+    //     const { optimizedPlayers } = await response.json();
+
+    //     optimizedPlayers.forEach(playerName => {
+    //         // Find the player object corresponding to playerName
+    //         const player = players.find(p => p.name === playerName);
+
+    //         // Add the player to the lineup
+    //         if (player) addPlayerToLineup(player);
+    //     });
+    // };
 
     const removePlayerFromLineup = (position) => {
         const player = lineup[position];
@@ -105,7 +169,7 @@ const LineupBuilder = ({
             name: lineupName,
             user_id: user.id, // Get userId from user context
             lineup_slots: Object.entries(lineup).map(([role, player]) => ({player_id: player.id, role})) // Change here
-    }
+        }
         console.log("Lineup data to be sent:", lineupData)
     
         // Use POST for create, PUT for update
@@ -189,6 +253,7 @@ const LineupBuilder = ({
                 <p>Total Projected Points: {totalPoints}</p>
                 <p>Total Ownership Percentage: {totalOwnership}%</p>
                 <button onClick={handleSaveLineup}>{buttonText}</button>
+                {/* <button onClick={handleOptimizeLineup}>Optimize Lineup</button> */}
             <table>
                 <thead>
                     <tr>

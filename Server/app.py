@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from config.config import SECRET_KEY
 from werkzeug.exceptions import NotFound, UnprocessableEntity, Unauthorized
 from flask_restful import Api, Resource, abort
+from optimizer import optimize_lineup
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -119,14 +120,14 @@ class Users(Resource):
 
 class UserByID(Resource):
     def get(self, user_id):
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
         if user is not None:
             return make_response(user.to_dict(), 200)
         else:
             abort(404, "User not found")
 
     def put(self, user_id):
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
         if not user:
             abort(404, "User not found")
         rq = request.get_json()
@@ -141,7 +142,7 @@ class UserByID(Resource):
         return make_response(user.to_dict(), 200)
 
     def delete(self, user_id):
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
         if user:
             db.session.delete(user)
             db.session.commit()
@@ -175,7 +176,7 @@ class LineupResource(Resource):
         lineup_slots = rq['lineup_slots']
 
         # Fetch the user
-        user = User.query.get(user_id)
+        user = db.session.get(User, user_id)
         if not user:
             abort(404, "User not found")
 
@@ -183,10 +184,13 @@ class LineupResource(Resource):
         total_salary = 0
         players = []
         for slot in lineup_slots:
-            player = Player.query.get(slot['player_id'])
+            player = db.session.get(Player, slot['player_id'])
             if not player:
                 abort(404, f"Player with id {slot['player_id']} not found")
 
+            if slot['role'] == 'FLEX' and player.position not in ['RB', 'WR', 'TE']:
+                abort(422, f"Invalid FLEX player. Must be a RB, WR, or TE.")
+                
             players.append((player, slot['role']))
             total_salary += player.salary
 
@@ -195,8 +199,8 @@ class LineupResource(Resource):
             abort(422, "Total salary exceeds $50,000")
 
         # Check if the lineup has the required number of players
-        if len(players) != 8:
-            abort(422, "Lineup must have 8 players")
+        if len(players) != 9:
+            abort(422, "Lineup must have 9 players")
 
         # # Check player roles and lineup slots
         # lineup_slots_dict = {'QB': 1, 'RB': 2, 'WR': 3, 'TE': 1, 'DEF': 1}
@@ -249,6 +253,9 @@ class LineupResource(Resource):
             player = Player.query.get(slot_data['player_id'])
             if not player:
                 abort(422, f"Player with id {slot_data['player_id']} not found")
+            
+            if slot_data['role'] == 'FLEX' and player.position not in ['RB', 'WR', 'TE']:
+                abort(422, f"Invalid FLEX player. Must be a RB, WR, or TE.")
                 
             total_salary += player.salary
             
@@ -304,6 +311,35 @@ class LineupResource(Resource):
         # return make_response(lineup.to_dict(), 200)
 
 
+# class OptimizeLineupResource(Resource):
+#     def post(self):
+#         data = request.get_json()  # Get the request data
+
+#         # Extract data
+#         available_players_names = data.get('availablePlayers')
+#         lineup_requirements = data.get('lineupRequirements')
+
+#         # Get the list of empty slots
+#         positions_needed = data['lineupRequirements']['positionsNeeded']
+
+#         # Get the remaining budget
+#         remaining_cap = data['lineupRequirements']['remainingCap']
+
+#         # Fetch player data from database
+#         available_players = Player.query.filter(Player.name.in_(available_players_names)).all()
+#         # players = [player.name for player in available_players]
+#         # salaries = {player.name: player.salary for player in available_players}
+#         # projected_points = {player.name: player.projected_points for player in available_players}
+
+#         # Create a Lineup object from the lineup_requirements
+#         lineup = Lineup(positions_needed, remaining_cap)
+        
+#         # Call the optimization function
+#         optimized_player_names = optimize_lineup(lineup, available_players, remaining_cap)
+
+#         # Return the optimized player names
+#         return make_response({'optimizedPlayers': optimized_player_names}, 200)
+
 class UserLineups(Resource):
     def get(self, user_id):
         lineups = Lineup.query.filter_by(user_id=user_id).all()
@@ -329,6 +365,7 @@ api.add_resource(PlayerByID, '/api/players/<int:player_id>')
 api.add_resource(LineupResource, '/api/lineups/', '/api/lineups/<int:lineup_id>')
 api.add_resource(UserLineups, '/api/users/<int:user_id>/lineups')
 api.add_resource(PlayerStatsResource, '/api/players/<int:player_id>/stats')
+# api.add_resource(OptimizeLineupResource, '/api/optimize')
 
 # Add resource routes and other necessary code
 

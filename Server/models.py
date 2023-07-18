@@ -174,6 +174,33 @@ class Lineup(db.Model, SerializerMixin):
         lineup = Lineup.query.filter(Lineup.id == id).first()
         return lineup
     
+    @classmethod
+    def add_players(self, player_ids, empty_slots):
+        for player_id, slot_role in zip(player_ids, empty_slots):
+            player = Player.query.get(player_id)
+            if not player:
+                raise ValueError(f"Player with id {player_id} not found")
+
+            empty_slot = next((slot for slot in self.lineup_slots if slot.is_empty and slot.role == slot_role), None)
+            if not empty_slot:
+                raise ValueError("No empty slot available")
+
+            empty_slot.player_id = player.id
+            empty_slot.is_empty = False
+
+    @classmethod
+    def get_remaining_budget(self):
+        total_salary = sum(slot.player.salary for slot in self.lineup_slots if not slot.is_empty)
+        return 50000 - total_salary  # Adjust the salary cap as needed
+    
+    @classmethod
+    def get_empty_slots(self):
+        return [slot.role for slot in self.lineup_slots if slot.is_empty]
+    
+    @classmethod
+    def get_selected_players(self):
+        return [slot.player.id for slot in self.lineup_slots if not slot.is_empty]
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     name = db.Column(db.String(128), nullable=False)
@@ -220,6 +247,10 @@ class Lineup(db.Model, SerializerMixin):
                 raise ValueError("Lineup name already exists.")
 
             return name
+    
+    # def __init__(self, positions_needed=None, remaining_cap=None):
+    #     self.positions_needed = positions_needed
+    #     self.remaining_cap = remaining_cap
 
 class LineupSlot(db.Model, SerializerMixin):
     __tablename__ = 'lineupSlot'
@@ -235,6 +266,7 @@ class LineupSlot(db.Model, SerializerMixin):
     role = db.Column(db.String(128), nullable=False)
     lineup = db.relationship('Lineup', back_populates='lineup_slots')
     player = db.relationship('Player', back_populates='lineup_slots')
+    is_empty = db.Column(db.Boolean, default=True, nullable=False)
     
     serialize_rules = ('-lineup.lineup_slots', '-player.lineup_slots')
 
@@ -256,31 +288,14 @@ class LineupSlot(db.Model, SerializerMixin):
 
     @validates('role')
     def validate_role(self, key, role):
-        valid_roles = ['QB', 'RB1', 'RB2', 'WR1', 'WR2', 'WR3', 'TE', 'DEF'] 
+        valid_roles = ['QB', 'RB1', 'RB2', 'WR1', 'WR2', 'WR3', 'TE', 'FLEX', 'DEF'] 
         if role not in valid_roles:
             raise ValueError(f"Invalid slot: {role}. Must be one of {valid_roles}.")
         return role
 
-    # @staticmethod
-    # def _update_lineup_with_player_info(target, value, oldvalue, initiator):
-    #     lineup = target.lineup
-    #     player = target.player
-
-    #     lineup_slot_info = {
-    #         'player_id': player.id,
-    #         'name': player.name,
-    #         'position': player.position,
-    #         'team': player.team,
-    #         'salary': player.salary,
-    #         'projected_points': player.projected_points,
-    #         'ownership_percentage': player.ownership_percentage
-    #     }
-
-    #     lineup.players.append(lineup_slot_info)
     
     def __init__(self, lineup=None, player=None, role=None):
         self.lineup = lineup
         self.player = player
         self.role = role
 
-# event.listen(LineupSlot, 'after_insert', LineupSlot._update_lineup_with_player_info)

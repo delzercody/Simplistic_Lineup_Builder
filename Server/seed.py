@@ -82,7 +82,7 @@ def seed_data():
         name="Whiskers",
         position="QB",
         team="TB",
-        salary=8000,
+        salary=7000,
         projected_points=25.5,
         ownership_percentage=15.2,
         team_game="TB vs. DAL")
@@ -98,7 +98,7 @@ def seed_data():
         name="Mittens",
         position="QB",
         team="KC",
-        salary=8200,
+        salary=7200,
         projected_points=24.8,
         ownership_percentage=16.5,
         team_game="KC vs. CLE")
@@ -114,7 +114,7 @@ def seed_data():
         name="Salem",
         position="QB",
         team="SEA",
-        salary=7800,
+        salary=7100,
         projected_points=23.5,
         ownership_percentage=14.9,
         team_game="SEA vs. IND")
@@ -130,7 +130,7 @@ def seed_data():
         name="Whiskerface",
         position="QB",
         team="BUF",
-        salary=7900,
+        salary=6900,
         projected_points=22.3,
         ownership_percentage=13.7,
         team_game="BUF vs. PIT")
@@ -146,7 +146,7 @@ def seed_data():
         name="Fuzzy",
         position="QB",
         team="GB",
-        salary=8100,
+        salary=7100,
         projected_points=24.6,
         ownership_percentage=16.1,
         team_game="GB vs. NO")
@@ -162,7 +162,7 @@ def seed_data():
         name="Purrfect",
         position="QB",
         team="LAR",
-        salary=8300,
+        salary=7300,
         projected_points=26.2,
         ownership_percentage=17.9,
         team_game="LAR vs. CHI")
@@ -178,7 +178,7 @@ def seed_data():
         name="Muffin",
         position="QB",
         team="DAL",
-        salary=7700,
+        salary=2700,
         projected_points=21.8,
         ownership_percentage=12.3,
         team_game="DAL vs. TB")
@@ -194,7 +194,7 @@ def seed_data():
         name="Whiskerkins",
         position="QB",
         team="SF",
-        salary=8000,
+        salary=7000,
         projected_points=23.1,
         ownership_percentage=14.5,
         team_game="SF vs. DET")
@@ -210,7 +210,7 @@ def seed_data():
         name="Sprinkles",
         position="QB",
         team="NE",
-        salary=7800,
+        salary=7100,
         projected_points=22.7,
         ownership_percentage=14.1,
         team_game="NE vs. MIA")
@@ -226,7 +226,7 @@ def seed_data():
         name="Snuggles",
         position="QB",
         team="NO",
-        salary=8400,
+        salary=7400,
         projected_points=25.9,
         ownership_percentage=17.3,
         team_game="NO vs. GB")
@@ -243,7 +243,7 @@ def seed_data():
         name="Whiskers",
         position="RB",
         team="CAR",
-        salary=8000,
+        salary=7500,
         projected_points=25.5,
         ownership_percentage=15.2,
         team_game="CAR vs. NYJ")
@@ -261,7 +261,7 @@ def seed_data():
         name="Fuzzy",
         position="RB",
         team="KC",
-        salary=8500,
+        salary=7800,
         projected_points=22.8,
         ownership_percentage=18.5,
         team_game="KC vs. CLE")
@@ -279,7 +279,7 @@ def seed_data():
         name="Whiskerino",
         position="RB",
         team="NO",
-        salary=7800,
+        salary=6800,
         projected_points=23.1,
         ownership_percentage=14.8,
         team_game="NO vs. GB")
@@ -297,7 +297,7 @@ def seed_data():
         name="Captain Whiskerpaws",
         position="RB",
         team="LAR",
-        salary=8200,
+        salary=7200,
         projected_points=21.5,
         ownership_percentage=17.2,
         team_game="LAR vs. CHI")
@@ -315,7 +315,7 @@ def seed_data():
         name="Fuzzy McWhiskerson",
         position="RB",
         team="DAL",
-        salary=7500,
+        salary=6700,
         projected_points=19.8,
         ownership_percentage=12.6,
         team_game="DAL vs. PHI")
@@ -333,7 +333,7 @@ def seed_data():
         name="Mittens McGee",
         position="RB",
         team="BUF",
-        salary=7900,
+        salary=6900,
         projected_points=18.9,
         ownership_percentage=11.3,
         team_game="BUF vs. NYJ")
@@ -351,7 +351,7 @@ def seed_data():
         name="Whiskers VonScratch",
         position="RB",
         team="KC",
-        salary=8200,
+        salary=7200,
         projected_points=17.5,
         ownership_percentage=10.2,
         team_game="KC vs. LV")
@@ -369,7 +369,7 @@ def seed_data():
         name="Captain Whiskerbeard",
         position="RB",
         team="TEN",
-        salary=7800,
+        salary=7000,
         projected_points=18.2,
         ownership_percentage=9.8,
         team_game="TEN vs. IND")
@@ -405,7 +405,7 @@ def seed_data():
         name="Fluffy McPounce",
         position="RB",
         team="SF",
-        salary=7900,
+        salary=7100,
         projected_points=18.6,
         ownership_percentage=10.8,
         team_game="SF vs. ARI")
@@ -423,7 +423,7 @@ def seed_data():
         name="Paws McFlufferton",
         position="RB",
         team="CLE",
-        salary=8000,
+        salary=7000,
         projected_points=18.4,
         ownership_percentage=10.6,
         team_game="CLE vs. PIT")
@@ -441,7 +441,7 @@ def seed_data():
         name="Whiskerface McGraw",
         position="RB",
         team="NE",
-        salary=7900,
+        salary=7200,
         projected_points=18.1,
         ownership_percentage=9.9,
         team_game="NE vs. MIA")
@@ -844,9 +844,9 @@ def seed_data():
         name="Whiskers",
         position="TE",
         team="BUF",
-        salary=4800,
-        projected_points=12.8,
-        ownership_percentage=8.2,
+        salary=5800,
+        projected_points=16.8,
+        ownership_percentage=18.2,
         team_game="BUF vs. PIT")
 
     te1_stats = PlayerStats(
@@ -860,7 +860,7 @@ def seed_data():
         name="Paws",
         position="TE",
         team="GB",
-        salary=5000,
+        salary=4500,
         projected_points=13.4,
         ownership_percentage=9.1,
         team_game="GB vs. NO")
@@ -877,7 +877,7 @@ def seed_data():
         position="TE",
         team="LAR",
         salary=5200,
-        projected_points=14.2,
+        projected_points=14.9,
         ownership_percentage=10.3,
         team_game="LAR vs. CHI")
 
@@ -892,7 +892,7 @@ def seed_data():
         name="Mittens",
         position="TE",
         team="DAL",
-        salary=4700,
+        salary=4300,
         projected_points=12.2,
         ownership_percentage=7.5,
         team_game="DAL vs. TB")
@@ -909,7 +909,7 @@ def seed_data():
         position="TE",
         team="SF",
         salary=4900,
-        projected_points=12.9,
+        projected_points=13.9,
         ownership_percentage=8.5,
         team_game="SF vs. DET")
 
@@ -924,7 +924,7 @@ def seed_data():
         name="Sprinkles",
         position="TE",
         team="NE",
-        salary=4800,
+        salary=3800,
         projected_points=12.6,
         ownership_percentage=8.1,
         team_game="NE vs. MIA")
@@ -940,7 +940,7 @@ def seed_data():
         name="Whiskertail",
         position="TE",
         team="NO",
-        salary=5200,
+        salary=4200,
         projected_points=14.3,
         ownership_percentage=10.4,
         team_game="NO vs. GB")
@@ -956,7 +956,7 @@ def seed_data():
         name="Pounce",
         position="TE",
         team="PIT",
-        salary=5100,
+        salary=4100,
         projected_points=13.8,
         ownership_percentage=9.7,
         team_game="PIT vs. BUF")
@@ -972,7 +972,7 @@ def seed_data():
         name="Claws",
         position="TE",
         team="CHI",
-        salary=4800,
+        salary=3800,
         projected_points=12.7,
         ownership_percentage=8.3,
         team_game="CHI vs. LAR")
@@ -988,7 +988,7 @@ def seed_data():
         name="Cuddlepaws",
         position="TE",
         team="TB",
-        salary=5000,
+        salary=4000,
         projected_points=13.3,
         ownership_percentage=9.0,
         team_game="TB vs. DAL")
@@ -1204,6 +1204,7 @@ def seed_data():
         LineupSlot(player=wr2, role='WR2'),
         LineupSlot(player=wr3, role='WR3'),
         LineupSlot(player=te1, role='TE'),
+        LineupSlot(player=te8, role='FLEX'),
         LineupSlot(player=def1, role='DEF')
     ]
 )
