@@ -38,26 +38,33 @@ function LoginForm() {
     });
 
     return (
-        <form onSubmit={formik.handleSubmit}>
-            <label htmlFor="usernameOrEmail">Username or Email</label>
-            <input
-                id="usernameOrEmail"
-                name="usernameOrEmail"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.usernameOrEmail}
-            />
-
-            <label htmlFor="password">Password</label>
-            <input
-                id="password"
-                name="password"
-                type="password"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-            />
-
-            <button type="submit">Submit</button>
+        <form class='form-signin container ' onSubmit={formik.handleSubmit}>
+            <h1 class='h1 mb-3 font-weight-normal'>Please Sign In</h1>
+            <div class="form-group mb-4">
+                <input
+                    id="usernameOrEmail"
+                    class='form-control-lg '
+                    name="usernameOrEmail"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.usernameOrEmail}
+                    placeholder="Enter email or username"
+                />
+                <label for="usernameOrEmail" class='form-label h3'></label>
+            </div>
+            <div class="form-group mb-4">
+            <label for="password" class='h3'></label>
+                <input
+                    id="password"
+                    class='form-control-lg'
+                    name="password"
+                    type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                    placeholder="Password"
+                />
+            </div>
+            <button type="submit" class="btn btn-lg btn-info btn-block mb-3">Sign In</button>
         </form>
     );
 }

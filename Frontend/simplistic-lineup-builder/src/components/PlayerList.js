@@ -13,22 +13,24 @@ useEffect(() => {
 }, []);
 
     return (
-    <table>
-        <thead>
-            <tr>
-                <th>Position</th>
-                <th>Name</th>
-                <th>Team</th>
-                <th>Salary</th>
-                <th>Projected Points</th>
-                <th>Ownership Percentage</th>
-                <th>Next Game</th>
-            </tr>
-        </thead>
-        <tbody>
-            {players.map(player => <PlayerCard key={player.id} player={player} />)}
-        </tbody>
-    </table>
+        <div className="container">
+        <table className="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                    <th>Team</th>
+                    <th>Salary</th>
+                    <th>Projected Points</th>
+                    <th>Ownership Percentage</th>
+                    <th>Next Game</th>
+                </tr>
+            </thead>
+            <tbody>
+                {players.map(player => <PlayerCard key={player.id} player={player} />)}
+            </tbody>
+        </table>
+    </div>
 );
 };
 

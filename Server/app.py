@@ -5,7 +5,7 @@ from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from config.config import SECRET_KEY
-from werkzeug.exceptions import NotFound, UnprocessableEntity, Unauthorized
+from werkzeug.exceptions import NotFound, UnprocessableEntity, Unauthorized, HTTPException
 from flask_restful import Api, Resource, abort
 from optimizer import optimize_lineup
 
@@ -65,7 +65,7 @@ def login():
         login_user(user)
         return make_response(user.to_dict(), 200)
     else:
-        abort(401, "Unauthorized")
+        abort(401, description="Unauthorized")
 
 @app.route('/logout', methods=['GET'])
 @login_required
@@ -365,7 +365,7 @@ api.add_resource(PlayerByID, '/api/players/<int:player_id>')
 api.add_resource(LineupResource, '/api/lineups/', '/api/lineups/<int:lineup_id>')
 api.add_resource(UserLineups, '/api/users/<int:user_id>/lineups')
 api.add_resource(PlayerStatsResource, '/api/players/<int:player_id>/stats')
-# api.add_resource(OptimizeLineupResource, '/api/optimize')
+# api.add_resource(OptimizeLineupResource, '/api/optimize') - Could not get optimizer working in time. 
 
 # Add resource routes and other necessary code
 

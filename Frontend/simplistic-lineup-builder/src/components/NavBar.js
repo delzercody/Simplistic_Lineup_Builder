@@ -19,12 +19,12 @@ function NavBar() {
 
     return (
         <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
-            <button onClick={handleHomeClick}>Home</button>
-            <button onClick={() => navigate('/dashboard')}>Dashboard</button>
-            <button onClick={() => navigate('/players')}>Players</button>
-            <button onClick={() => navigate('/buildlineup')}>Build Lineup</button>
-            <button onClick={() => navigate('/viewsavedlineups')}>View Saved Lineups</button>
-            <button onClick={() => navigate('/userprofile')}>User Profile</button>
+            <button class="btn btn-lg btn-secondary btn-block mb-3" onClick={handleHomeClick}>Home</button>
+            <button class="btn btn-lg btn-secondary btn-block mb-3" onClick={() => navigate('/dashboard')}>Dashboard</button>
+            <button class="btn btn-lg btn-secondary btn-block mb-3" onClick={() => navigate('/players')}>Players</button>
+            <button class="btn btn-lg btn-secondary btn-block mb-3" onClick={() => navigate('/buildlineup')}>Build Lineup</button>
+            <button class="btn btn-lg btn-secondary btn-block mb-3" onClick={() => navigate('/viewsavedlineups')}>View Saved Lineups</button>
+            <button class="btn btn-lg btn-secondary btn-block mb-3" onClick={() => navigate('/userprofile')}>User Profile</button>
             {user && (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     <img src={user.avatar} alt="user avatar" style={{ height: '30px', marginRight: '10px' }} /> {/* Assuming user object has a property named avatarUrl */}

@@ -1,7 +1,6 @@
 // App.js
 
 import React from 'react';
-import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import PlayersPage from './components/PlayersPage';
@@ -13,6 +12,9 @@ import EditLineupPage from './components/EditLineupPage';
 import PlayerStatsPage from './components/PlayerStatsPage';
 import BuildLineupPage from './components/BuildLineupPage';
 import LogoutButton from './components/LogoutButton';
+import 'bootstrap/dist/css/bootstrap.min.css'
+
+import './stylesheets/App.css';
 
 import { UserProvider } from './UserContext';
 

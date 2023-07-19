@@ -8,9 +8,9 @@ function HomePage() {
     const switchForm = () => setIsLogin(!isLogin);
 
     return (
-        <div>
+        <div class='text-center'>
             {isLogin ? <LoginForm /> : <SignupForm />}
-            <button onClick={switchForm}>
+            <button class="btn btn-outline-dark btn-block mb-4" onClick={switchForm}>
                 Switch to {isLogin ? 'Signup' : 'Login'}
             </button>
         </div>

@@ -4,6 +4,7 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 import UserContext from '../UserContext';
 
+
 const LineupBuilder = ({ 
     players, 
     initialLineupProp, 
@@ -215,7 +216,7 @@ const LineupBuilder = ({
                 </label>
                 <p>{feedback}</p>
                 <h2>Current Lineup</h2>
-                <table>
+                <table className="table table-striped table-hover table-bordered container">
                     <thead>
                         <tr>
                             <th>Position</th>
@@ -240,7 +241,7 @@ const LineupBuilder = ({
                                         <td>{player.projected_points}</td>
                                         <td>{player.ownership_percentage}</td>
                                         <td>{player.team_game}</td>
-                                        <td><button onClick={() => removePlayerFromLineup(position)}>Remove</button></td>
+                                        <td><button class="btn btn-danger" onClick={() => removePlayerFromLineup(position)}>Remove</button></td>
                                     </>
                                 ) : (
                                     <td colSpan="7">Empty</td>
@@ -252,9 +253,10 @@ const LineupBuilder = ({
                 <p>Total Salary: {totalSalary}</p>
                 <p>Total Projected Points: {totalPoints}</p>
                 <p>Total Ownership Percentage: {totalOwnership}%</p>
-                <button onClick={handleSaveLineup}>{buttonText}</button>
+                <button class="btn btn-primary" onClick={handleSaveLineup}>{buttonText}</button>
                 {/* <button onClick={handleOptimizeLineup}>Optimize Lineup</button> */}
-            <table>
+                <h2>Available Players</h2>
+            <table className="table table-striped table-hover table-bordered container">
                 <thead>
                     <tr>
                         <th>Position</th>
@@ -264,11 +266,11 @@ const LineupBuilder = ({
                         <th>Projected Points</th>
                         <th>Ownership Percentage</th>
                         <th>Next Game</th>
-                        <th>Add to Lineup</th> {/* Empty header for the button column */}
+                        <th>Add to Lineup</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {players.map(player => (
+                {players.map(player => (
                         <tr key={player.id}>
                             <td>{player.position}</td>
                             <td><Link to={`/players/${player.id}`}>{player.name}</Link></td>
@@ -277,7 +279,11 @@ const LineupBuilder = ({
                             <td>{player.projected_points}</td>
                             <td>{player.ownership_percentage}</td>
                             <td>{player.team_game}</td>
-                            <td><button onClick={() => addPlayerToLineup(player)}>Add to Lineup</button></td>
+                            <td><button class="btn btn-success" onClick={() => addPlayerToLineup(player)}>Add to Lineup</button></td>
+                            {/* <td>{player.selected ? 
+                                <button disabled>Added</button> : 
+                                <button onClick={addPlayerToLineup}>Add</button>}
+                            </td> */}
                         </tr>
                     ))}
                 </tbody>
