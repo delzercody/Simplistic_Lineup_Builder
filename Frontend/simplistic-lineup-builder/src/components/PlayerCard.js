@@ -6,13 +6,13 @@ import { Link } from 'react-router-dom';
 const PlayerCard = ({ player }) => {
     return (
         <tr>
-            <td>{player.position}</td>
-            <td><Link to={`/players/${player.id}`}>{player.name}</Link></td>
-            <td>{player.team}</td>
-            <td>{player.salary}</td>
-            <td>{player.projected_points}</td>
-            <td>{player.ownership_percentage}</td>
-            <td>{player.team_game}</td>
+            <td class='h5'>{player.position}</td>
+            <td class='h5'><Link to={`/players/${player.id}`}>{player.name}</Link></td>
+            <td class='h5'>{player.team}</td>
+            <td class='h5'>{player.salary}</td>
+            <td class='h5'>{player.projected_points}</td>
+            <td class='h5'>{player.ownership_percentage}</td>
+            <td class='h5'>{player.team_game}</td>
         </tr>
     );
 };

@@ -212,86 +212,92 @@ const LineupBuilder = ({
 
         return (
             <div>
-                <h2>Lineup Builder</h2>
-                <label class='h3'>
-                    Lineup Name: 
-                    <input type="text" value={lineupName} onChange={e => setLineupName(e.target.value)} />
-                </label>
-                <p className={`h1 ${isSuccessful ? 'text-info' : 'text-danger'}`}>{feedback}</p>
-                <h2>Current Lineup</h2>
-                <table className="table table-striped table-hover table-bordered container table-dark">
-                    <thead>
-                        <tr>
-                            <th>Position</th>
-                            <th>Name</th>
-                            <th>Team</th>
-                            <th>Salary</th>
-                            <th>Projected Points</th>
-                            <th>Ownership Percentage</th>
-                            <th>Next Game</th>
-                            <th>Remove From Lineup</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {Object.entries(lineup).map(([position, player]) => (
-                            <tr key={position}>
-                                <td>{position}</td>
-                                {player ? (
-                                    <>
-                                        <td>{player.name}</td>
-                                        <td>{player.team}</td>
-                                        <td>${player.salary}</td>
-                                        <td>{player.projected_points}</td>
-                                        <td>{player.ownership_percentage}%</td>
-                                        <td>{player.team_game}</td>
-                                        <td><button class="btn btn-danger" onClick={() => removePlayerFromLineup(position)}>Remove</button></td>
-                                    </>
-                                ) : (
-                                    <td colSpan="7">Empty</td>
-                                )}
+                <div >
+                    <h2>Lineup Builder</h2>
+                    <label class='h3'>
+                        Lineup Name: 
+                        <input type="text" value={lineupName} onChange={e => setLineupName(e.target.value)} />
+                    </label>
+                    <p className={`h1 ${isSuccessful ? 'text-info' : 'text-danger'}`}>{feedback}</p>
+                    <div style={{ position: 'sticky', top: '0' }}>
+                    <h2 >Current Lineup</h2>
+                    <table className="table table-striped table-hover table-bordered container table-dark">
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Team</th>
+                                <th>Salary</th>
+                                <th>Projected Points</th>
+                                <th>Ownership Percentage</th>
+                                <th>Next Game</th>
+                                <th>Remove From Lineup</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-                <p class='h3'>Total Salary: {totalSalary}</p>
-                <p class='h3'>Total Projected Points: {totalPoints}</p>
-                <p class='h3'>Total Ownership Percentage: {totalOwnership}%</p>
-                <button class="btn btn-primary" onClick={handleSaveLineup}>{buttonText}</button>
-                {/* <button onClick={handleOptimizeLineup}>Optimize Lineup</button> */}
+                        </thead>
+                        <tbody>
+                            {Object.entries(lineup).map(([position, player]) => (
+                                <tr key={position}>
+                                    <td>{position}</td>
+                                    {player ? (
+                                        <>
+                                            <td>{player.name}</td>
+                                            <td>{player.team}</td>
+                                            <td>${player.salary}</td>
+                                            <td>{player.projected_points}</td>
+                                            <td>{player.ownership_percentage}%</td>
+                                            <td>{player.team_game}</td>
+                                            <td><button class="btn btn-danger" onClick={() => removePlayerFromLineup(position)}>Remove</button></td>
+                                        </>
+                                    ) : (
+                                        <td colSpan="7">Empty</td>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    </div>
+                    <p class='h3'>Total Salary: {totalSalary}</p>
+                    <p class='h3'>Total Projected Points: {totalPoints}</p>
+                    <p class='h3'>Total Ownership Percentage: {totalOwnership}%</p>
+                    <button class="btn btn-warning" onClick={handleSaveLineup}>{buttonText}</button>
+                    {/* <button onClick={handleOptimizeLineup}>Optimize Lineup</button> */}
+                </div>
                 <h2>Available Players</h2>
-            <table className="table table-striped table-hover table-bordered container ">
-                <thead>
-                    <tr>
-                        <th>Position</th>
-                        <th>Name</th>
-                        <th>Team</th>
-                        <th>Salary</th>
-                        <th>Projected Points</th>
-                        <th>Ownership Percentage</th>
-                        <th>Next Game</th>
-                        <th>Add to Lineup</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {players.map(player => (
-                        <tr key={player.id}>
-                            <td>{player.position}</td>
-                            <td><Link to={`/players/${player.id}`}>{player.name}</Link></td>
-                            <td>{player.team}</td>
-                            <td>${player.salary}</td>
-                            <td>{player.projected_points}</td>
-                            <td>{player.ownership_percentage}%</td>
-                            <td>{player.team_game}</td>
-                            <td><button class="btn btn-success" onClick={() => addPlayerToLineup(player)}>Add to Lineup</button></td>
-                            {/* <td>{player.selected ? 
-                                <button disabled>Added</button> : 
-                                <button onClick={addPlayerToLineup}>Add</button>}
-                            </td> */}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                <div style={{ overflowY: 'scroll', maxHeight: '70vh' }}>
+                    <table className="table table-striped table-hover table-bordered container ">
+                        <thead>
+                            <tr>
+                                <th>Position</th>
+                                <th>Name</th>
+                                <th>Team</th>
+                                <th>Salary</th>
+                                <th>Projected Points</th>
+                                <th>Ownership Percentage</th>
+                                <th>Next Game</th>
+                                <th>Add to Lineup</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {players.map(player => (
+                                <tr key={player.id}>
+                                    <td class='h5'>{player.position}</td>
+                                    <td class='h5'><Link to={`/players/${player.id}`}>{player.name}</Link></td>
+                                    <td class='h5'>{player.team}</td>
+                                    <td class='h5'>${player.salary}</td>
+                                    <td class='h5'>{player.projected_points}</td>
+                                    <td class='h5'>{player.ownership_percentage}%</td>
+                                    <td class='h5'>{player.team_game}</td>
+                                    <td><button class="btn btn-success" onClick={() => addPlayerToLineup(player)}>Add to Lineup</button></td>
+                                    {/* <td>{player.selected ? 
+                                        <button disabled>Added</button> : 
+                                        <button onClick={addPlayerToLineup}>Add</button>}
+                                    </td> */}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         );
 };
 

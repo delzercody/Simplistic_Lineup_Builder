@@ -9,7 +9,7 @@ function Dashboard() {
             <h1 style = {{marginTop: '40px'}}>Welcome to the Daily Fantasy Football Lineup Builder</h1>
 
             <div className="dashboard-links" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 10%', marginTop: '60px' }}>
-    <div class="card" style={{ width: '18rem', height: '12rem', backgroundColor: '#00CED1' }}>
+    <div class="card" style={{ width: '18rem', height: '12rem', backgroundColor: '#00BFFF' }}>
         <div class="card-body">
             <h5 class="card-title">View All Players</h5>
             <p class="card-text">Access a list of all the players.</p>
@@ -17,7 +17,7 @@ function Dashboard() {
         </div>
     </div>
     
-    <div class="card" style={{ width: '18rem', height: '12rem', backgroundColor: '#FFD700' }}>
+    <div class="card" style={{ width: '18rem', height: '12rem', backgroundColor: '#00BFFF' }}>
         <div class="card-body">
             <h5 class="card-title">Build a Lineup</h5>
             <p class="card-text">Create your own lineup from the players.</p>
@@ -25,7 +25,7 @@ function Dashboard() {
         </div>
     </div>
     
-    <div class="card" style={{ width: '18rem', height: '12rem', backgroundColor: '#FFC0CB' }}>
+    <div class="card" style={{ width: '18rem', height: '12rem', backgroundColor: '#00BFFF' }}>
         <div class="card-body">
             <h5 class="card-title">View Saved Lineups</h5>
             <p class="card-text">Check out the lineups you've saved.</p>

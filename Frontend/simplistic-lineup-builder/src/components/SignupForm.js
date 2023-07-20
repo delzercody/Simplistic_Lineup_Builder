@@ -134,7 +134,7 @@ function SignupForm() {
             />
         </div>
 
-            <button type="submit" class="btn btn-lg btn-info btn-block mb-3">Sign Up</button>
+            <button type="submit" class="btn btn-lg btn-warning btn-block mb-3">Sign Up</button>
         </form>
     );
 }

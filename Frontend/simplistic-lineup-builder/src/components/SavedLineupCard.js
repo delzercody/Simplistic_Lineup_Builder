@@ -44,7 +44,7 @@ function SavedLineupCard({ lineup }) {
 
         return (
             <div className="dashboard-links" style={{marginTop: '60px'}}>
-            <div class="card" style={{width: "100%", backgroundColor: '#FFC0CB'}}>
+            <div class="card" style={{width: "100%", backgroundColor: '#FFD700'}}>
                 <div class="card-body">
                     <h2 class="card-title">{lineup.name}</h2>
                     <table class="table">

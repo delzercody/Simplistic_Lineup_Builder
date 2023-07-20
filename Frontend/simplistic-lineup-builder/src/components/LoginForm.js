@@ -64,7 +64,7 @@ function LoginForm() {
                     placeholder="Password"
                 />
             </div>
-            <button type="submit" class="btn btn-lg btn-info btn-block mb-3">Sign In</button>
+            <button type="submit" class="btn btn-lg btn-warning btn-block mb-3">Sign In</button>
         </form>
     );
 }
