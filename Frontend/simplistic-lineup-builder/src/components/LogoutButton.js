@@ -22,7 +22,7 @@ function LogoutButton() {
     };
 
     return (
-    <button class="btn btn-lg btn-outline-dark btn-block mb-3 container" onClick={handleLogout}>Logout</button>
+    <button class="btn btn-lg btn-outline-light btn-block mb-3 container" onClick={handleLogout}>Logout</button>
     );
 }
 

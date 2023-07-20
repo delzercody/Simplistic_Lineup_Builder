@@ -21,11 +21,12 @@ import { UserProvider } from './UserContext';
 function App() {
   return (
     <UserProvider>
-      <div className="App">
-        {/* <header className="App-header">
-        </header> */}
-        <Router>
-          <NavBar />
+      <div className="App-container">
+      <Router>
+        <header className="App-header">
+        <NavBar />
+        </header>
+        <div className="content-container">
           <Routes>
             <Route path="/" element={<HomePage />} /> {/* Include Login/SignUp forms here */}
             <Route path="/dashboard" element={<Dashboard />} />
@@ -36,7 +37,7 @@ function App() {
             <Route path="/userprofile" element={<UserProfilePage />} />
             <Route path="/players/:id" element={<PlayerStatsPage />} />
           </Routes>
-          <LogoutButton />
+          </div>
         </Router>
       </div>
     </UserProvider>

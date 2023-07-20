@@ -43,7 +43,7 @@ function LoginForm() {
             <div class="form-group mb-4">
                 <input
                     id="usernameOrEmail"
-                    class='form-control-lg '
+                    class='form-control-lg form-field'
                     name="usernameOrEmail"
                     type="text"
                     onChange={formik.handleChange}

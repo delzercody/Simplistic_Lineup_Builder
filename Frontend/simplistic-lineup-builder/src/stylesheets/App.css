@@ -7,9 +7,12 @@
   pointer-events: none;
 }
 
-.App {
+.App-container {
+  display: flex;
+  flex-direction: column;
   text-align: center;
-  background-color: #4682B4;
+  min-height: 100vh;
+  background-color: #008000;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -20,10 +23,11 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
+  min-height: 10vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  text-align: center;
+  /* align-items: center; */
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
@@ -44,4 +48,10 @@
 
 .selected-player {
   background-color: blue !important;
+}
+
+.content-container {
+  flex-grow: 1;
+  /* Add margin or padding to create space */
+  margin-bottom: 20px; /* Example: 20px of space */
 }
